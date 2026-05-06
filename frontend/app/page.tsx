@@ -119,7 +119,7 @@ export default function HomePage() {
             </div>
             <div className="rounded-2xl border border-white/10 bg-white/10 px-6 py-5 text-sm text-slate-200">
               <p className="text-xs uppercase tracking-[0.3em] text-blue-200">Admin</p>
-              <p className="text-lg font-semibold text-white">{user.fullName}</p>
+              <p className="text-lg font-semibold text-white">{user.full_name}</p>
               <p className="text-sm text-slate-300">{user.email}</p>
             </div>
           </div>

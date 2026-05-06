@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, FormEvent, useCallback, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, Suspense, useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -85,7 +85,7 @@ type RecruiterInviteNotification = {
   updated_at: string;
 };
 
-export default function ProfilePage() {
+function ProfilePageInner() {
   const { user, isLoading: authLoading } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
@@ -1080,3 +1080,12 @@ function FormTextArea({ label, value, onChange, rows = 3 }: FormTextAreaProps) {
   );
 }
 
+
+
+export default function ProfilePage() {
+  return (
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center"><div className="text-slate-300">Loading...</div></div>}>
+      <ProfilePageInner />
+    </Suspense>
+  );
+}
