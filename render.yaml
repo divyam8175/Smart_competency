@@ -1,0 +1,49 @@
+# Render Blueprint — deploy both services from one repo
+# https://render.com/docs/blueprint-spec
+
+services:
+  # ─── Backend (FastAPI) ───────────────────────────────────────────────
+  - type: web
+    name: scb-backend
+    runtime: python
+    region: oregon
+    rootDir: apps/backend
+    buildCommand: chmod +x build.sh && ./build.sh
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: MONGODB_URI
+        sync: false
+      - key: MONGODB_DB_NAME
+        value: smart_competency_builder
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GROQ_MODEL
+        value: llama-3.3-70b-versatile
+      - key: GROQ_TIMEOUT
+        value: "120"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "60"
+      - key: CORS_ORIGINS
+        sync: false  # Set this to your frontend URL after deploy, e.g. https://scb-frontend.onrender.com
+      - key: PYTHON_VERSION
+        value: "3.11.9"
+
+  # ─── Frontend (Next.js) ─────────────────────────────────────────────
+  - type: web
+    name: scb-frontend
+    runtime: node
+    region: oregon
+    rootDir: apps/frontend
+    buildCommand: chmod +x build.sh && ./build.sh
+    startCommand: node .next/standalone/server.js
+    envVars:
+      - key: NEXT_PUBLIC_API_BASE_URL
+        sync: false  # Set to your backend URL, e.g. https://scb-backend.onrender.com
+      - key: PORT
+        value: "3000"
+      - key: NODE_VERSION
+        value: "20.11.0"
