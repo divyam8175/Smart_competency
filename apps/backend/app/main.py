@@ -33,28 +33,6 @@ async def root() -> dict[str, str]:
     return {"message": "Smart Competency Builder API", "docs": "/docs"}
 
 
-@app.get("/test-ollama")
-async def test_ollama() -> dict[str, str]:
-    """Quick endpoint to verify the Ollama runtime is reachable."""
-    from .services.ollama_client import OllamaClient
-
-    try:
-        client = OllamaClient()
-        result = await client.generate_summary(
-            {
-                "candidate": {
-                    "full_name": "Test User",
-                    "email": "test@example.com",
-                    "job_role": "Developer",
-                },
-                "skills": [{"name": "Python", "category": "technical", "confidence": 0.9}],
-            }
-        )
-        return {"status": "success", "message": result}
-    except Exception as exc:
-        return {"status": "error", "message": str(exc)}
-
-
 app.include_router(auth.router)
 app.include_router(profile.router)
 app.include_router(candidates.router)
