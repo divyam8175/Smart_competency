@@ -11,7 +11,7 @@ __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
-*.python-version
+# .python-version is tracked (used by Render to specify Python runtime)
 .venv/
 venv/
 .envrc
